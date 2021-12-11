@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -26,6 +27,7 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpire: Date,
 });
 
+// Hashing password before saving to the DB
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -35,6 +37,18 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
+
+// Password Matching Control
+userSchema.methods.matchPasswords = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+// get signed token
+userSchema.methods.getSignedToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+};
 
 const User = mongoose.model("User", userSchema);
 
