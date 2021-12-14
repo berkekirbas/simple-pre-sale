@@ -43,7 +43,7 @@ userSchema.methods.matchPasswords = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-// get signed token
+// get signed token // içine aslında id de gizliyoruz oluşturulan jwt tokenlerin
 userSchema.methods.getSignedToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,

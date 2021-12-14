@@ -1,0 +1,11 @@
+AUTHENTICATION ENDPOINTS
+
+/api/<version>/auth/<type>
+DESCRIPTION: Authentication endpoints
+<version>: api version
+<type>: {login, register, forgotPasword, resetPassword}
+
+/api/<version>/private/user/<type>
+DESCRIPTION: Private user endpoints (needs authentication)
+<version>: api version
+<type>: {getUser}

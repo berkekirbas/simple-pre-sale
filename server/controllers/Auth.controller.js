@@ -5,14 +5,33 @@ exports.register = async (request, response, next) => {
   const { name, email, password } = request.body;
 
   try {
+    const user = await User.findOne({ email });
+    if (user) {
+      return next(new ErrorResponse("User already exist", 400));
+    }
+  } catch (error) {
+    return next(new ErrorResponse("Something went wrong", 500));
+  }
+
+  try {
     const user = await User.create({
       name,
       email,
       password,
     });
-    sendToken(user, 201, response);
+    //sendToken(user, 201, response);
+    response.status(201).json({
+      success: true,
+      data: [
+        {
+          message:
+            "User registration is successfully, Please verify your E-mail",
+          email: user.email,
+        },
+      ],
+    });
   } catch (error) {
-    next();
+    next(new ErrorResponse("Something went wrong", 500));
   }
 };
 
