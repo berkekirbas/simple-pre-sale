@@ -16,13 +16,19 @@ const userSchema = new mongoose.Schema({
       "Please provide a valid email",
     ],
   },
-
   password: {
     type: String,
     required: [true, "Please provide a password"],
     minlength: 6,
     select: false,
   },
+
+  isVerified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 });
@@ -47,6 +53,13 @@ userSchema.methods.matchPasswords = async function (password) {
 userSchema.methods.getSignedToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
+  });
+};
+
+// user email verification token
+userSchema.methods.generateVerificationToken = function () {
+  return jwt.sign({ id: this._id }, process.env.VERIFICATION_SECRET_TOKEN, {
+    expiresIn: process.env.VERIFICATION_EXPIRE,
   });
 };
 
