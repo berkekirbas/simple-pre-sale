@@ -1,5 +1,5 @@
 /**
- * @description Define Authentication Routes
+ * @description Definition for Authentication Routes
  */
 
 const express = require("express");
