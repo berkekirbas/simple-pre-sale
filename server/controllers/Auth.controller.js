@@ -1,9 +1,11 @@
-const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/User.model");
 
 const ErrorResponse = require("../utils/errorResponse");
 const transporter = require("../utils/emailConfiguration");
+
+const crypto = require("crypto");
 
 exports.register = async (request, response, next) => {
   const { name, email, password } = request.body;
@@ -26,14 +28,14 @@ exports.register = async (request, response, next) => {
 
     const verificationToken = user.generateVerificationToken();
 
-    const url = `${process.env.BASE_URL}/api/${process.env.API_VERSION}/verify/${verificationToken}`;
+    const url = `${process.env.BASE_URL}:${process.env.PORT}/api/v${process.env.API_VERSION}/auth/verify/${verificationToken}`;
 
     // TODO: FIX this
-    transporter.sendMail({
+    await transporter.sendMail({
       from: process.env.MAIL_USERNAME,
       to: email,
       subject: "Account Verification",
-      html: `Click <a href='${url}'>here</a> to confirm your email`,
+      html: `Click <a href='${url}' clicktracking=off>here</a> to confirm your email`,
     });
 
     response.status(201).json({
@@ -49,15 +51,6 @@ exports.register = async (request, response, next) => {
     next(new ErrorResponse("Something went wrong", 500));
   }
 };
-
-/**
- * @description USER LOGIN
- *
- * @param {*} request
- * @param {*} response
- * @param {*} next
- * @returns
- */
 
 exports.login = async (request, response, next) => {
   const { email, password } = request.body;
@@ -88,12 +81,82 @@ exports.login = async (request, response, next) => {
   }
 };
 
-exports.forgotPassword = (request, response, next) => {
-  response.send("Forgot Password Controller");
+exports.forgotPassword = async (request, response, next) => {
+  const { email } = request.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return next(new ErrorResponse("Email could not be send", 404));
+    }
+
+    const resetToken = user.getResetPasswordToken();
+
+    await user.save();
+
+    const resetUrl = `${process.env.BASE_URL}:${process.env.PORT}/api/v${process.env.API_VERSION}/auth/resetPassword/${resetToken}`;
+
+    const message = `
+    <h1>You have requested a password reset</h1>
+    <p>Please go to this link to reset your password</p>
+    <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
+    `;
+
+    try {
+      await transporter.sendMail({
+        from: process.env.MAIL_USERNAME,
+        to: user.email,
+        subject: "Password Reset Request",
+        html: message,
+      });
+
+      response.status(200).json({ success: true, data: "Email Sent" });
+    } catch (error) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+
+      await user.save();
+
+      return next(new ErrorResponse("Email could not be send", 500));
+    }
+  } catch (error) {
+    next(error);
+  }
 };
 
-exports.resetPassword = (request, response, next) => {
-  response.send("Reset Password Controller");
+exports.resetPassword = async (request, response, next) => {
+  const { resetToken } = request.params;
+  const { password } = request.body;
+
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return next(new ErrorResponse("Invalid reset token", 400));
+    }
+
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    response.status(201).json({
+      success: true,
+      data: "Password Reset Success",
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.verifyUser = async (request, response, next) => {
@@ -108,7 +171,7 @@ exports.verifyUser = async (request, response, next) => {
   try {
     payload = jwt.verify(token, process.env.VERIFICATION_SECRET_TOKEN);
   } catch (error) {
-    return next(new ErrorResponse(err, 500));
+    return next(new ErrorResponse(error, 500));
   }
 
   // Step 2 - Find user with matching ID
@@ -117,16 +180,21 @@ exports.verifyUser = async (request, response, next) => {
     if (!user) {
       return next(new ErrorResponse("User does not exist", 404));
     }
+    if (user.isVerified) {
+      return next(new ErrorResponse("This user is already verified", 409));
+    }
 
     // Step 3 - Update user verification status to true
-    user.verified = true;
+    user.isVerified = true;
     await user.save();
 
     return response.status(200).json({
       success: true,
       message: "Your Account is verified",
     });
-  } catch (error) {}
+  } catch (error) {
+    return next(new ErrorResponse("Someting went wrong", 500));
+  }
 };
 
 const sendToken = (user, statusCode, response) => {

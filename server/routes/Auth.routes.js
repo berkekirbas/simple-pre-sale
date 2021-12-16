@@ -21,6 +21,6 @@ router.route(`/forgotPassword`).post(forgotPassword);
 
 router.route(`/resetPassword/:resetToken`).put(resetPassword);
 
-router.route(`/verify/:id`).get(verifyUser);
+router.route(`/verify/:token`).get(verifyUser);
 
 module.exports = router;
