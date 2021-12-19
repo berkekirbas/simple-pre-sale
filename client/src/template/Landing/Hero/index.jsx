@@ -4,26 +4,26 @@ import React from "react";
 
 function Hero() {
   return (
-    <div class="hero-area hero-area2 hero-area5 hero-text">
+    <div className="hero-area hero-area2 hero-area5 hero-text">
       <img
-        class="shape parallax5"
+        className="shape parallax5"
         src="assets/images/home/h2-shape.png"
         alt=""
       />
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="content">
-              <div class="content">
-                <h5 class="subtitle">PLAY GAMES to WIN</h5>
-                <h1 class="title">Our Cryptocurrency is in PreSale</h1>
-                <div class="links">
-                  <a href="/" class="mybtn1">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="content">
+              <div className="content">
+                <h5 className="subtitle">PLAY GAMES to WIN</h5>
+                <h1 className="title">Our Cryptocurrency is in PreSale</h1>
+                <div className="links">
+                  <a href="/" className="mybtn1">
                     Buy Now
                   </a>
                   <a
                     href="https://www.youtube.com/watch?v=jssO8-5qmag"
-                    class="video_btn play-video mfp-iframe"
+                    className="video_btn play-video mfp-iframe"
                   >
                     <FontAwesomeIcon icon={faPlay} />
                   </a>

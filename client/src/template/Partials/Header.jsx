@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -13,6 +14,8 @@ import {
   faLinkedin,
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
+
+import { AuthenticationRoutes } from "../../config/RouteConfig";
 
 function Header() {
   return (
@@ -34,22 +37,22 @@ function Header() {
                     </ul>
                     <ul className="top-social-links">
                       <li>
-                        <a href="#">
+                        <a href="/">
                           <FontAwesomeIcon icon={faFacebookF} />
                         </a>
                       </li>
                       <li>
-                        <a href="#">
+                        <a href="/">
                           <FontAwesomeIcon icon={faTwitter} />
                         </a>
                       </li>
                       <li>
-                        <a href="#">
+                        <a href="/">
                           <FontAwesomeIcon icon={faLinkedin} />
                         </a>
                       </li>
                       <li>
-                        <a href="#">
+                        <a href="/">
                           <FontAwesomeIcon icon={faInstagram} />
                         </a>
                       </li>
@@ -79,7 +82,7 @@ function Header() {
                         <div
                           className="message"
                           data-toggle="modal"
-                          data-target="#usermessage"
+                          data-target="/"
                         >
                           <FontAwesomeIcon icon={faEnvelope} />
                         </div>
@@ -155,15 +158,12 @@ function Header() {
                           </a>
                         </li>
                         <li>
-                          <a
-                            href="#"
+                          <Link
+                            to={AuthenticationRoutes.LOGIN}
                             className="mybtn1"
-                            data-toggle="modal"
-                            data-target="#signin"
                           >
-                            {" "}
                             PreSale
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>

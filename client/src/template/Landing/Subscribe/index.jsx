@@ -2,29 +2,29 @@ import React from "react";
 
 function Subscribe() {
   return (
-    <div class="subscribe-area subscribe-area2">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="subscribe-box">
-              <img class="left" src="assets/images/vr.png" alt="" />
+    <div className="subscribe-area subscribe-area2">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="subscribe-box">
+              <img className="left" src="assets/images/vr.png" alt="" />
               <img
-                class="right"
+                className="right"
                 src="assets/images/game%20controler_.png"
                 alt=""
               />
-              <div class="row justify-content-center">
-                <div class="col-lg-12">
-                  <div class="heading-area">
-                    <h5 class="sub-title">Subscribe to Game Coin</h5>
-                    <h4 class="title">To Get Exclusive Benefits</h4>
+              <div className="row justify-content-center">
+                <div className="col-lg-12">
+                  <div className="heading-area">
+                    <h5 className="sub-title">Subscribe to Game Coin</h5>
+                    <h4 className="title">To Get Exclusive Benefits</h4>
                   </div>
                 </div>
 
-                <div class="col-lg-6 col-12">
-                  <form action="#" class="form-area">
+                <div className="col-lg-6 col-12">
+                  <form action="/" className="form-area">
                     <input type="text" placeholder="Your Email Address" />
-                    <button class="mybtn1" type="submit">
+                    <button className="mybtn1" type="submit">
                       Subscribe
                     </button>
                   </form>

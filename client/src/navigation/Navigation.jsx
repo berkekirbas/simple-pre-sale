@@ -1,27 +1,62 @@
-import { Loader } from "../template";
-
+/* Library Imports */
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { GuestRoutes } from "../config/RouteConfig";
+/* Components */
+import { Loader } from "../template";
 
-import ProtectedRoute from './ProtectedRoute'
-import {AuthenticationRoute} from "./AuthenticationRoute";
+/* Router Config */
+import {
+  AuthenticationRoutes,
+  ProtectedRoutes,
+  PublicRoutes,
+} from "../config/RouteConfig";
 
+/* Router Utils */
+import ProtectedRoute from "./ProtectedRoute";
+import AuthenticationRoute from "./AuthenticationRoute";
+
+/* Pages */
 const Home = React.lazy(() => import("../pages/Home"));
+const Signin = React.lazy(() => import("../pages/Signin"));
 
-function Navigation() {
+const Navigation = () => {
   return (
     <Router>
       <React.Suspense fallback={<Loader />}>
         <Switch>
-            <Route exact path={PUBLIC_ROUTES.HOME} render={() => <Home />} />
-            <AuthenticationRoute exact path={} component={}/>
-            <ProtectedRoute exact path={} component={}/>
+          {/* Public Routes */}
+          <Route exact path={PublicRoutes.HOME} component={() => <Home />} />
+
+          {/* Authentication Routes */}
+
+          <AuthenticationRoute
+            exact
+            path={AuthenticationRoutes.LOGIN}
+            component={() => <Signin />}
+          />
+
+          <AuthenticationRoute
+            exact
+            path={AuthenticationRoutes.REGISTER}
+            component={<>pro</>}
+          />
+          <AuthenticationRoute
+            exact
+            path={AuthenticationRoutes.RESET_PASSWORD}
+            component={<>pro</>}
+          />
+
+          {/* Protected Routes */}
+          <ProtectedRoute
+            exact
+            path={ProtectedRoutes.PRESALE_DASHBOARD}
+            component={<>pro</>}
+          />
         </Switch>
       </React.Suspense>
     </Router>
   );
-}
+};
 
 export default Navigation;

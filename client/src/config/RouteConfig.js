@@ -1,13 +1,13 @@
-export const GuestRoutes = {
+export const PublicRoutes = {
   HOME: "/",
 };
 
 export const AuthenticationRoutes = {
-  LOGIN: "/auth/login",
+  LOGIN: "/auth/signin",
   REGISTER: "/auth/signup",
-  RESET_PASSWORD: "/auth/account/"
-}
+  RESET_PASSWORD: "/auth/password/reset",
+};
 
-export const PrivateRoutes = {
+export const ProtectedRoutes = {
   PRESALE_DASHBOARD: "/presale",
-}
+};

@@ -33,7 +33,7 @@ function Home() {
       <Footer />
       <NotificationModal />
 
-      <div class="bottomtotop">
+      <div className="bottomtotop">
         <i>
           <FontAwesomeIcon icon={faChevronRight} />
         </i>

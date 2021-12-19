@@ -1,17 +1,21 @@
 import React from "react";
-import {Route, Redirect} from "react-router-dom";
-import {AuthenticationRoutes} from "../config/RouteConfig";
+import { Route, Redirect } from "react-router-dom";
 
-const AuthenticationRoute = ({component: Component, ...rest}) => {
+import { ProtectedRoutes } from "../config/RouteConfig";
+
+const AuthenticationRoute = ({ component: Component, ...rest }) => {
+  return (
     <Route
-        {...rest}
-        render={props =>
-            localStorage.getItem("auth_key") ? (
-                    <Redirect to={PrivateRoutes.PRESALE_DASHBOARD}/>
-            ) : (
-                <Component {...props} />
-            )}
+      {...rest}
+      render={(props) =>
+        localStorage.getItem("auth_key") ? (
+          <Redirect to={ProtectedRoutes.PRESALE_DASHBOARD} />
+        ) : (
+          <Component {...props} />
+        )
+      }
     />
-}
+  );
+};
 
-export default AuthenticationRoute
+export default AuthenticationRoute;
