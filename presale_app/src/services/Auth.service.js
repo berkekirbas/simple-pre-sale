@@ -8,8 +8,14 @@ class AuthService {
   signup = async (formValues) => {
     const response = await axios
       .post(`${this.baseUrl}/api/v1/auth/signup`, formValues)
-      .then((response) => response)
-      .catch((error) => error);
+      .then((response) => response);
+    return response.data;
+  };
+
+  signin = async (formValues) => {
+    const response = await axios
+      .post(`${this.baseUrl}/api/v1/auth/signin`, formValues)
+      .then((response) => response);
     return response.data;
   };
 }

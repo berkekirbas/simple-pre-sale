@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import SecureService from "services/Secure.service";
-
-import { Brand, Button } from "template";
-import SuccessModal from "template/components/Modals/RegisterSuccessModal";
-
+import { Link, useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
+
+import {
+  Brand,
+  Button,
+  Modal,
+  SpinnerButton,
+  ValidateableField,
+} from "template";
+
 import { validationSchema } from "utils/validationSchema";
-import ValidateableField from "template/components/Form/ValidateableField";
+
+import SecureService from "services/Secure.service";
 import AuthService from "services/Auth.service";
-import Spinner from "template/components/Spinner";
 
 const Signup = () => {
   const [isProcess, setProcess] = useState(null);
   const [showModal, setShowModal] = useState(null);
+  const [modalData, setModalData] = useState({ title: "", message: "" });
+
+  const history = useHistory();
 
   useEffect(() => {
     SecureService.getCSRFToken();
@@ -29,9 +36,16 @@ const Signup = () => {
 
     const data = await AuthService.signup(formValues);
 
-    setProcess(false);
-
-    if (data.success) setShowModal(true);
+    if (data.success) {
+      setProcess(false);
+      setModalData({
+        title: "Registration success",
+        message:
+          "Your Registration is successfully, if you sign in, please verify your mail!",
+      });
+      setShowModal(true);
+      history.push("/auth/signin");
+    }
   };
 
   return (
@@ -98,14 +112,7 @@ const Signup = () => {
               </div>
 
               {isProcess ? (
-                <button
-                  disabled
-                  className="  w-full py-3 bg-primary text-white ring-red-400 focus:outline-none focus:ring-4 mt-6 rounded-lg transition duration-300 poppins "
-                >
-                  <div className="inline-flex item-center">
-                    <Spinner /> <span className="ml-1">Processing</span>
-                  </div>
-                </button>
+                <SpinnerButton />
               ) : (
                 <Button text="Sign Up" type="submit" />
               )}
@@ -119,7 +126,12 @@ const Signup = () => {
           )}
         </Formik>
       </div>
-      <SuccessModal showModal={showModal} setShowModal={setShowModal} />
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        data={modalData}
+        setData={setModalData}
+      />
     </main>
   );
 };

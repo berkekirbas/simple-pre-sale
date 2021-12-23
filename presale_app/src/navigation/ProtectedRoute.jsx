@@ -3,21 +3,16 @@ import React, { useEffect, useState } from "react";
 
 import { Route, Redirect } from "react-router-dom";
 
-import { AuthenticationRoutes, ProtectedRoutes } from "../config/RouteConfig";
+import { AuthenticationRoutes } from "../config/RouteConfig";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const [authStatus, setAuthStatus] = useState(null);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
-  useEffect(() => {
-    setAuthStatus(isAuthenticated);
-  }, [isAuthenticated]);
-
-  return (
+  return isLoading ? null : (
     <Route
       {...rest}
       render={(props) =>
-        authStatus ? (
+        isAuthenticated ? (
           <Component {...props} />
         ) : (
           <Redirect to={AuthenticationRoutes.SIGNIN} />

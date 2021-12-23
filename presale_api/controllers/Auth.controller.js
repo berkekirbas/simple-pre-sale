@@ -51,20 +51,20 @@ exports.login = async (request, response, next) => {
   const { email, password } = request.body;
 
   if (!email || !password) {
-    return next(new ErrorResponse("Please provide an email and password", 400));
+    return next(new ErrorResponse("Please provide an email and password", 200));
   }
 
   try {
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return next(new ErrorResponse("Invalid Credentials", 401));
+      return next(new ErrorResponse("Invalid Credentials", 200));
     }
 
     const isMatch = await user.matchPasswords(password);
 
     if (!isMatch) {
-      return next(new ErrorResponse("Invalid Credentials", 401));
+      return next(new ErrorResponse("Invalid Credentials", 200));
     }
 
     sendToken(user, 200, response);
@@ -195,12 +195,16 @@ exports.verifyUser = async (request, response, next) => {
 const sendToken = (user, statusCode, response) => {
   const token = user.getSignedToken();
 
-  return response.status(statusCode).cookie('auth_key', token, {
-    sameSite: 'strict',
-    path: '/',
-    expires: process.env.JWT_EXPIRE,
-    httpOnly: true
-  }).json({
-    success: true, data: "User Authentication is successfully"
-  })
+  return response
+    .cookie("auth_key", token, {
+      sameSite: "strict",
+      path: "/",
+      expires: new Date(Date.now() + 86400), 
+      httpOnly: true,
+      secure: process.env.APP_MODE == "production" ? true : false
+    })
+    .json({
+      success: true,
+      data: "User Authentication is successfully",
+    });
 };

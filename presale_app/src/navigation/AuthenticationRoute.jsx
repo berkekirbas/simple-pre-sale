@@ -6,18 +6,13 @@ import { Route, Redirect } from "react-router-dom";
 import { ProtectedRoutes } from "../config/RouteConfig";
 
 const AuthenticationRoute = ({ component: Component, ...rest }) => {
-  const [authStatus, setAuthStatus] = useState(null);
-  const { isAuthenticated, error, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
-  useEffect(() => {
-    setAuthStatus(isAuthenticated);
-  }, [isAuthenticated]);
-
-  return (
+  return isLoading ? null : (
     <Route
       {...rest}
       render={(props) =>
-        authStatus ? (
+        isAuthenticated ? (
           <Redirect to={ProtectedRoutes.PRESALE_DASHBOARD} />
         ) : (
           <Component {...props} />

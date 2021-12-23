@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
-export default function LoginModal({ showModal, setShowModal, data, setData }) {
+export default function Modal({ showModal, setShowModal, data, setData }) {
   useEffect(() => {
-    if (showModal == false) setData("");
+    if (showModal === false) setData({});
   }, [showModal]);
 
   return (
@@ -15,7 +15,7 @@ export default function LoginModal({ showModal, setShowModal, data, setData }) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Hey!</h3>
+                  <h3 className="text-3xl font-semibold">{data.title}</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -28,7 +28,7 @@ export default function LoginModal({ showModal, setShowModal, data, setData }) {
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
-                    {data}
+                    {data.message}
                   </p>
                 </div>
                 {/*footer*/}

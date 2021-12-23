@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from "react";
-
-import { Brand, TextField, Button, Spinner, LoginModal } from "template";
-
 import { Link } from "react-router-dom";
+
+import { Brand, TextField, Button, Modal, SpinnerButton } from "template";
+
 import SecureService from "services/Secure.service";
+import AuthService from "services/Auth.service";
+import { useHistory } from "react-router-dom";
 
 const Signin = () => {
   const [isProcess, setProcess] = useState(null);
   const [showModal, setShowModal] = useState(null);
-  const [data, setData] = useState("");
-
-  useEffect(() => {
-    SecureService.getCSRFToken();
-  }, []);
-
+  const [modalData, setModalData] = useState({ title: "", message: "" });
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
   });
 
-  // handle change
-  const handleChange = (e) => {
-    const { value, name } = e.target;
+  const history = useHistory();
+
+  useEffect(() => {
+    SecureService.getCSRFToken();
+  }, []);
+
+  const handleChange = (event) => {
+    const { value, name } = event.target;
     setUserInput((prev) => {
       return {
         ...prev,
@@ -30,15 +32,32 @@ const Signin = () => {
     });
   };
 
-  //handle submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setProcess(true);
-    if (userInput.email == "" || userInput.password == "") {
-      setData("Please fill email and password inputs");
+
+    const formValues = {
+      ...userInput,
+    };
+
+    if (userInput.email === "" || userInput.password === "") {
+      setModalData({
+        title: "Hey",
+        message: "Please fill email and password inputs",
+      });
       setShowModal(true);
       setProcess(false);
     }
+
+    const data = await AuthService.signin(formValues);
+
+    if (!data.success || data.success) {
+      setProcess(false);
+      setModalData({ title: "Hey", message: data.error });
+      setShowModal(true);
+    }
+
+    history.push("/");
   };
 
   const Inputs = [
@@ -80,14 +99,7 @@ const Signin = () => {
             ))}
           </div>
           {isProcess ? (
-            <button
-              disabled
-              className="  w-full py-3 bg-primary text-white ring-red-400 focus:outline-none focus:ring-4 mt-6 rounded-lg transition duration-300 poppins "
-            >
-              <div className="inline-flex item-center">
-                <Spinner /> <span className="ml-1">Processing</span>
-              </div>
-            </button>
+            <SpinnerButton />
           ) : (
             <Button text="Sign in" type="submit" />
           )}
@@ -98,11 +110,11 @@ const Signin = () => {
           </Link>
         </form>
       </div>
-      <LoginModal
+      <Modal
         showModal={showModal}
         setShowModal={setShowModal}
-        data={data}
-        setData={setData}
+        data={modalData}
+        setData={setModalData}
       />
     </main>
   );
