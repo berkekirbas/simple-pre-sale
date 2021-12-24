@@ -10,9 +10,25 @@ import ValidateableField from "./components/Form/ValidateableField";
 
 import Modal from "./components/Modals/Modal";
 
+/**
+ *
+ * Dashboard UI Component Imports
+ *
+ */
+
+import Header from "./DashboardComponents/Header";
+import Elements from "./DashboardComponents/Elements";
+
 export { Loader, Spinner, SpinnerButton };
 
-// form components
 export { Brand, Button, Label, TextField, ValidateableField };
 
 export { Modal };
+
+/**
+ *
+ * Dashboard UI Component Exports
+ *
+ */
+
+export { Header, Elements };

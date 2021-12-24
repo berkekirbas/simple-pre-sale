@@ -7,11 +7,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import { AuthenticationRoutes, ProtectedRoutes } from "../config/RouteConfig";
 
-import NotFound from "pages/NotFound";
-
-import Signin from "pages/Signin";
-import Signup from "pages/Signup";
-import Dashboard from "pages/Dashboard";
+import { Dashboard, Signin, Signup, NotFound } from "pages";
 
 const Navigator = () => {
   return (
