@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
-import { Brand, TextField, Button, Modal, SpinnerButton } from "template";
+import { Brand, TextField, Button, Modal, SpinnerButton } from "../../template";
 
-import SecureService from "services/Secure.service";
-import AuthService from "services/Auth.service";
-import { useHistory } from "react-router-dom";
+import SecureService from "../../services/Secure.service";
+import AuthService from "../../services/Auth.service";
 
 const Signin = () => {
   const [isProcess, setProcess] = useState(null);
-  const [showModal, setShowModal] = useState(null);
-  const [modalData, setModalData] = useState({ title: "", message: "" });
+
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
   });
+
+  const [showModal, setShowModal] = useState(null);
+  const [modalData, setModalData] = useState({ title: "", message: "" });
 
   const history = useHistory();
 
@@ -51,10 +52,11 @@ const Signin = () => {
 
     const data = await AuthService.signin(formValues);
 
-    if (!data.success || data.success) {
+    if (!data.success) {
       setProcess(false);
       setModalData({ title: "Hey", message: data.error });
       setShowModal(true);
+      return;
     }
 
     history.push("/");

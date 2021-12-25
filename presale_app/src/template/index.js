@@ -12,23 +12,26 @@ import Modal from "./components/Modals/Modal";
 
 /**
  *
- * Dashboard UI Component Imports
+ * Dashboard UI Component Imports and Exports
  *
  */
 
 import Header from "./DashboardComponents/Header";
-import Elements from "./DashboardComponents/Elements";
+
+import MetawonzCount from "./DashboardComponents/Elements/MetawonzCount";
+import Wallet from "./DashboardComponents/Elements/Wallet";
+import Buy from "./DashboardComponents/Elements/Buy";
+import Counter from "./DashboardComponents/Elements/Counter";
+
+export { Header, MetawonzCount, Wallet, Buy, Counter };
+
+/**
+ *
+ *
+ */
 
 export { Loader, Spinner, SpinnerButton };
 
 export { Brand, Button, Label, TextField, ValidateableField };
 
 export { Modal };
-
-/**
- *
- * Dashboard UI Component Exports
- *
- */
-
-export { Header, Elements };

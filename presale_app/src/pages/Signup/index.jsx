@@ -8,12 +8,12 @@ import {
   Modal,
   SpinnerButton,
   ValidateableField,
-} from "template";
+} from "../../template";
 
-import { validationSchema } from "utils/validationSchema";
+import { validationSchema } from "../../utils/validationSchema";
 
-import SecureService from "services/Secure.service";
-import AuthService from "services/Auth.service";
+import SecureService from "../../services/Secure.service";
+import AuthService from "../../services/Auth.service";
 
 const Signup = () => {
   const [isProcess, setProcess] = useState(null);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SecureService from "services/Secure.service";
+import SecureService from "../services/Secure.service";
 
 const useAuth = () => {
   const [isAuthenticated, setAuthenticated] = useState(null);

@@ -7,7 +7,9 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import { AuthenticationRoutes, ProtectedRoutes } from "../config/RouteConfig";
 
-import { Dashboard, Signin, Signup, NotFound } from "pages";
+import { Dashboard, Signin, Signup, NotFound } from "../pages";
+
+import { MoralisProvider } from "react-moralis";
 
 const Navigator = () => {
   return (
@@ -15,7 +17,14 @@ const Navigator = () => {
       <ProtectedRoute
         exact
         path={ProtectedRoutes.PRESALE_DASHBOARD}
-        component={() => <Dashboard />}
+        component={() => (
+          <MoralisProvider
+            serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL}
+            appId={process.env.REACT_APP_MORALIS_APP_ID}
+          >
+            <Dashboard />
+          </MoralisProvider>
+        )}
       />
 
       <AuthenticationRoute
