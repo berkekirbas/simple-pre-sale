@@ -7,7 +7,8 @@ class SecureService {
 
   getCSRFToken = async () => {
     const response = await axios.get(
-      `${this.baseUrl}/api/v1/secure/getCSRFToken`
+      `${this.baseUrl}/api/v1/secure/getCSRFToken`,
+      { withCredentials: true }
     );
 
     axios.defaults.headers.post["X-CSRF-Token"] = response.data.CSRFToken;
@@ -15,11 +16,13 @@ class SecureService {
 
   checkAuthentication = async () => {
     const response = await axios
-      .get(`${this.baseUrl}/api/v1/secure/authenticationChecker`)
+      .get(`${this.baseUrl}/api/v1/secure/authenticationChecker`, {
+        withCredentials: true,
+      })
       .then((response) => response)
       .catch((error) => error);
     return response.data.data;
   };
 }
 
-export default new SecureService(process.env.REACT_APP_BASE_API_URL);
+export default new SecureService("http://localhost:3005");

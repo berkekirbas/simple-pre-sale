@@ -18,10 +18,11 @@ const Counter = () => {
         </div>
       </div>
 
-      <div>
-        <p className="max-w-xs mt-6 text-xs text-gray-600 sm:text-sm sm:text-center sm:max-w-sm sm:mx-auto">
-          Coming Soon
-        </p>
+      <div className="text-center">
+        <div className="text-lg font-semibold">Countdown</div>
+        <div className="flex items-center justify-center mt-2">
+          <div className="text-green-500 mr-1 text-2xl font-bold">0</div>
+        </div>
       </div>
     </div>
   );

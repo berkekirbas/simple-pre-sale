@@ -1,22 +1,22 @@
 import axios from "axios";
 
-class AuthService {
+class UserService {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
   }
 
-  signup = async (formValues) => {
+  getUser = async () => {
     const response = await axios
-      .post(`${this.baseUrl}/api/v1/auth/signup`, formValues, {
+      .get(`${this.baseUrl}/api/v1/private/user/getUser`, {
         withCredentials: true,
       })
       .then((response) => response);
     return response.data;
   };
 
-  signin = async (formValues) => {
+  setWithdrawalAddress = async (values) => {
     const response = await axios
-      .post(`${this.baseUrl}/api/v1/auth/signin`, formValues, {
+      .put(`${this.baseUrl}/api/v1/private/user/setWithdrawAddress`, values, {
         withCredentials: true,
       })
       .then((response) => response);
@@ -24,4 +24,4 @@ class AuthService {
   };
 }
 
-export default new AuthService("http://localhost:3005");
+export default new UserService("http://localhost:3005");

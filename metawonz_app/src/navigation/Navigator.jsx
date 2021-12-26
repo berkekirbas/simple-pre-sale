@@ -10,6 +10,8 @@ import { AuthenticationRoutes, ProtectedRoutes } from "../config/RouteConfig";
 import { Dashboard, Signin, Signup, NotFound } from "../pages";
 
 import { MoralisProvider } from "react-moralis";
+import { Provider } from "react-redux";
+import store from "../store";
 
 const Navigator = () => {
   return (
@@ -19,10 +21,12 @@ const Navigator = () => {
         path={ProtectedRoutes.PRESALE_DASHBOARD}
         component={() => (
           <MoralisProvider
-            serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL}
-            appId={process.env.REACT_APP_MORALIS_APP_ID}
+            serverUrl={"https://ivhjvqqamaom.usemoralis.com:2053/server"}
+            appId={"neyBlY7EjNj8KoRNf5B4rH2g0LqXlkrcGp6Dhr5u"}
           >
-            <Dashboard />
+            <Provider store={store}>
+              <Dashboard />
+            </Provider>
           </MoralisProvider>
         )}
       />

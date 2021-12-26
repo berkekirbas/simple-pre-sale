@@ -23,7 +23,9 @@ import Wallet from "./DashboardComponents/Elements/Wallet";
 import Buy from "./DashboardComponents/Elements/Buy";
 import Counter from "./DashboardComponents/Elements/Counter";
 
-export { Header, MetawonzCount, Wallet, Buy, Counter };
+import ConnectWalletButton from "./DashboardComponents/Header/ConnectWalletButton";
+
+export { Header, MetawonzCount, Wallet, Buy, Counter, ConnectWalletButton };
 
 /**
  *

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 export default function Modal({ showModal, setShowModal, data, setData }) {
   useEffect(() => {
-    if (showModal === false) setData({});
+    if (showModal === false) setData({ data: "", title: "" });
   }, [showModal]);
 
   return (
