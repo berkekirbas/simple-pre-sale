@@ -10,8 +10,8 @@ module.exports = (app) => {
   app.use(cors({ origin: process.env.FRONTEND_BASE_URL, credentials: true }));
   app.use(cookieParser());
   app.use(bodyParser.json());
+  app.use(morgan("combined"));
   app.use(csrf({
     cookie: true
   }));
-  app.use(morgan("combined"));
 };

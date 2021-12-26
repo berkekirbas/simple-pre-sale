@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    hidden: true,
     required: [true, "Please provide a email"],
     unique: true,
     match: [
@@ -19,6 +20,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    hidden: true,
     required: [true, "Please provide a password"],
     minlength: 6,
     select: false,
@@ -28,6 +30,16 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: false,
+  },
+
+  walletAddress: {
+    default: "",
+    type: String
+  },
+
+  metawonzValue: {
+    type: Number,
+    default: 0
   },
 
   resetPasswordToken: String,

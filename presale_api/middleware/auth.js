@@ -4,7 +4,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const User = require("../models/User.model");
 
 exports.protect = async (request, response, next) => {
-  let token = request.cookies['authKey'];
+  let token = request.cookies['auth_key'];
 
   if (!token) {
     return next(new ErrorResponse("Not authorized to access this route", 401));
@@ -13,7 +13,7 @@ exports.protect = async (request, response, next) => {
   try {
     const decodedJwtToken = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = User.findById(decodedJwtToken.id);
+    const user = await User.findById({_id: decodedJwtToken.id});
 
     if (!user) {
       return next(new ErrorResponse("No user found with this id", 404));

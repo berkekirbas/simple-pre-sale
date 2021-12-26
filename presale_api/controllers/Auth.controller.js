@@ -199,7 +199,7 @@ const sendToken = (user, statusCode, response) => {
     .cookie("auth_key", token, {
       sameSite: "strict",
       path: "/",
-      expires: new Date(Date.now() + 86400), 
+      expires: new Date(Date.now() + 3600 * 60 * 60 ), 
       httpOnly: true,
       secure: process.env.APP_MODE == "production" ? true : false
     })

@@ -15,6 +15,7 @@ initializeSettings(app);
 initializeRoutes(app);
 app.use(errorHandler);
 
+
 const server = app.listen(PORT, () => {
   console.log(`API is started on port ${PORT}`);
 });
