@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Label, SpinnerButton, TextField } from "../..";
 import {
@@ -7,7 +7,6 @@ import {
 } from "../../../store/slices/UserSlice";
 
 import { useDispatch } from "react-redux";
-import SecureService from "../../../services/Secure.service";
 
 const AddressChangeModal = ({ showModal, modalOpen }) => {
   const { userAccount, loading } = useSelector(userSelector);
@@ -22,10 +21,6 @@ const AddressChangeModal = ({ showModal, modalOpen }) => {
     setNewAddress(value);
   };
 
-  useEffect(() => {
-    SecureService.getCSRFToken();
-  }, []);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     if (newAddress === userAccount.walletAddress) {
@@ -38,6 +33,8 @@ const AddressChangeModal = ({ showModal, modalOpen }) => {
     };
 
     dispatch(changeUserWithdrawalAddress(values));
+    setNewAddress("");
+    showModal(false);
   };
 
   return (
@@ -55,7 +52,7 @@ const AddressChangeModal = ({ showModal, modalOpen }) => {
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => showModal(false)}
                   >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                    <span className="text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
                       ×
                     </span>
                   </button>
@@ -64,16 +61,20 @@ const AddressChangeModal = ({ showModal, modalOpen }) => {
                 <form onSubmit={handleSubmit}>
                   <div className="relative p-6 flex-auto">
                     {userAccount.walletAddress === "" ? (
-                      <TextField
-                        type="text"
-                        placeholder="Your Withdraw Address"
-                        value={newAddress}
-                        name="walletAddress"
-                        onChange={handleChange}
-                      />
+                      <Fragment>
+                        <Label text={"Set your Address"} />
+
+                        <TextField
+                          type="text"
+                          placeholder="Your Withdraw Address"
+                          value={newAddress}
+                          name="walletAddress"
+                          onChange={handleChange}
+                        />
+                      </Fragment>
                     ) : (
                       <Fragment>
-                        <Label>Old Address</Label>
+                        <Label text={"Old Address"} />
                         <TextField
                           disabled
                           type="text"
@@ -84,7 +85,7 @@ const AddressChangeModal = ({ showModal, modalOpen }) => {
 
                         <br />
 
-                        <Label>New Address</Label>
+                        <Label text={"New Address"} />
                         <TextField
                           type="text"
                           placeholder="Your Withdraw Address"

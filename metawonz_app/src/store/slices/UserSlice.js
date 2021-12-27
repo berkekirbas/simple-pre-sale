@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import SecureService from "../../services/Secure.service";
 import UserService from "../../services/User.service";
 
 export const initialState = {
   loading: false,
   hasErrors: false,
   userAccount: [],
+  tempWalletAddress: "",
 };
 
 export const userSelector = (state) => state.userSlice;
@@ -18,6 +20,7 @@ const userSlice = createSlice({
     },
     getUserSuccess: (state, { payload }) => {
       state.userAccount = payload;
+      state.tempWalletAddress = state.userAccount.walletAddress;
       state.loading = false;
       state.hasErrors = false;
     },
@@ -30,7 +33,8 @@ const userSlice = createSlice({
       state.loading = true;
     },
     setWithdrawAddressSuccess: (state, { payload }) => {
-      state.userAccount.walletAddress = payload;
+      state.userAccount.walletAddress = payload.walletAddress;
+      state.tempWalletAddress = payload.walletAddress;
       state.loading = false;
       state.hasErrors = false;
     },
@@ -69,12 +73,10 @@ export const getUserInfo = () => {
 export const changeUserWithdrawalAddress = (values) => {
   return async (dispatch) => {
     dispatch(setWithdrawAddress());
+    await SecureService.getCSRFToken();
     try {
       const data = await UserService.setWithdrawalAddress(values);
-
-      console.log(data);
-
-      dispatch(setWithdrawAddressSuccess(data));
+      if (data.success) dispatch(setWithdrawAddressSuccess(values));
     } catch (error) {
       dispatch(setWithdrawAddressFail());
     }

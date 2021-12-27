@@ -4,7 +4,7 @@ import { Buy, Counter, Header, MetawonzCount, Wallet } from "../../template";
 import { useDispatch } from "react-redux";
 
 import { getUserInfo } from "../../store/slices/UserSlice";
-import SecureService from "../../services/Secure.service";
+import Cookies from "js-cookie";
 
 const Dashboard = () => {
   const { user } = useMoralis();
@@ -18,12 +18,12 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserInfo());
+    async function initializer() {
+      await Cookies.remove("_csrf");
+      await dispatch(getUserInfo());
+    }
+    initializer();
   }, [dispatch]);
-
-  useEffect(() => {
-    SecureService.getCSRFToken();
-  }, []);
 
   return (
     <div className="bg-gray-900">

@@ -1,19 +1,19 @@
 import React, { Fragment } from "react";
 import { useMoralis } from "react-moralis";
 
-//import { metamaskDetector } from "../../../utils/metamaskDetector";
+import { metamaskDetector } from "../../../utils/metamaskDetector";
 
 const ConnectWalletButton = () => {
   const { authenticate, isAuthenticated, logout } = useMoralis();
 
   const connect = async () => {
     // detect metamask
-    /*let detect = metamaskDetector();
+    let detect = metamaskDetector();
 
     if (detect) {
       authenticate({ chainId: 56 });
       return;
-    }*/
+    }
     await authenticate({
       provider: "walletconnect",
       chainId: 56,
