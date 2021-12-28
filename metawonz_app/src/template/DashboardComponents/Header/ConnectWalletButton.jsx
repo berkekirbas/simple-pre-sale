@@ -8,12 +8,12 @@ const ConnectWalletButton = () => {
 
   const connect = async () => {
     // detect metamask
-    let detect = metamaskDetector();
+    /* let detect = metamaskDetector();
 
     if (detect) {
       authenticate({ chainId: 56 });
       return;
-    }
+    }*/
     await authenticate({
       provider: "walletconnect",
       chainId: 56,

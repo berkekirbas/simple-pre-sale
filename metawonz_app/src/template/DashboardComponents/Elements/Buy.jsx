@@ -60,7 +60,9 @@ const Buy = () => {
           Don't miss out on metaverse benefits with metawonz
         </p>
       </div>
-      <BuyModal showModal={showModal} modalOpen={modalOpen} />
+      {isAuthenticated ? (
+        <BuyModal showModal={showModal} modalOpen={modalOpen} />
+      ) : null}
     </div>
   );
 };

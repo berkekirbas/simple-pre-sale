@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
 
@@ -12,7 +12,6 @@ import {
 
 import { validationSchema } from "../../utils/validationSchema";
 
-import SecureService from "../../services/Secure.service";
 import AuthService from "../../services/Auth.service";
 
 const Signup = () => {
@@ -21,10 +20,6 @@ const Signup = () => {
   const [modalData, setModalData] = useState({ title: "", message: "" });
 
   const history = useHistory();
-
-  useEffect(() => {
-    SecureService.getCSRFToken();
-  }, []);
 
   const handleSubmit = async (values) => {
     setProcess(true);

@@ -43,20 +43,24 @@ const BuyModal = ({ showModal, modalOpen }) => {
     const transaction = await Moralis.transfer(transactionOptions);
 
     transaction
-      .on("transactionHash", (hash) => {
-        console.log(hash);
+      .on("receipt", (receipt) => {
+        // TODO: BURADAN DÖNEN SONUÇ İLE İŞLEM BAŞARILIMI GÖREBİLİYORUZ SS İ MASAÜSTÜNDE VE TELEGRAMDA VAR
+        console.log(receipt);
         setLoading(false);
       })
-      .on("receipt", (receipt) => {
-        console.log(receipt);
+      .on("transactionHash", (hash) => {
+        console.log("hash" + hash);
+        console.log(hash);
         setLoading(false);
       })
       .on("confirmation", (confirmationNumber, receipt) => {
         console.log(confirmationNumber);
+
         console.log(receipt);
         setLoading(false);
       })
       .on("error", (error) => {
+        console.log("error" + error);
         console.log(error);
         setLoading(false);
       });

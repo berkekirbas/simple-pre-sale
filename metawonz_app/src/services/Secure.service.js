@@ -11,8 +11,9 @@ class SecureService {
       { withCredentials: true }
     );
 
-    axios.defaults.headers.post["X-CSRF-Token"] = response.data.CSRFToken;
-    axios.defaults.headers.put["X-CSRF-Token"] = response.data.CSRFToken;
+    //axios.defaults.headers.post["X-CSRF-Token"] = response.data.CSRFToken;
+    //axios.defaults.headers.put["X-CSRF-Token"] = response.data.CSRFToken;
+    return response.data.CSRFToken;
   };
 
   checkAuthentication = async () => {
