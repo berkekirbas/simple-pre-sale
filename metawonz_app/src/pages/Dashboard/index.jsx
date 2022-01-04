@@ -4,7 +4,6 @@ import { Buy, Counter, Header, MetawonzCount, Wallet } from "../../template";
 import { useDispatch } from "react-redux";
 
 import { getUserInfo } from "../../store/slices/UserSlice";
-import Cookies from "js-cookie";
 
 const Dashboard = () => {
   const { user } = useMoralis();
@@ -19,7 +18,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     async function initializer() {
-      await Cookies.remove("_csrf");
       await dispatch(getUserInfo());
     }
     initializer();

@@ -42,6 +42,19 @@ const userSlice = createSlice({
       state.loading = false;
       state.hasErrors = true;
     },
+
+    addMetawonz: (state) => {
+      state.loading = true;
+    },
+    addMetawonzSuccess: (state, { payload }) => {
+      state.userAccount.metawonzValue = payload.data;
+      state.loading = false;
+      state.hasErrors = false;
+    },
+    addMetawonzFail: (state) => {
+      state.loading = false;
+      state.hasErrors = true;
+    },
   },
 });
 
@@ -52,6 +65,9 @@ export const {
   setWithdrawAddress,
   setWithdrawAddressSuccess,
   setWithdrawAddressFail,
+  addMetawonz,
+  addMetawonzSuccess,
+  addMetawonzFail,
 } = userSlice.actions;
 
 // The reducer
@@ -77,6 +93,19 @@ export const changeUserWithdrawalAddress = (values) => {
     try {
       const data = await UserService.setWithdrawalAddress(values);
       if (data.success) dispatch(setWithdrawAddressSuccess(values));
+    } catch (error) {
+      dispatch(setWithdrawAddressFail());
+    }
+  };
+};
+
+export const addMetawonzToUser = (purchasedMetawonz) => {
+  return async (dispatch) => {
+    dispatch(addMetawonz());
+    await SecureService.getCSRFToken();
+    try {
+      const data = await UserService.addPurchasedMetawonz(purchasedMetawonz);
+      if (data.success) dispatch(addMetawonzSuccess(data));
     } catch (error) {
       dispatch(setWithdrawAddressFail());
     }

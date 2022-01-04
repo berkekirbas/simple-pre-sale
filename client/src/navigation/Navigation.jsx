@@ -18,7 +18,7 @@ import AuthenticationRoute from "./AuthenticationRoute";
 
 /* Pages */
 const Home = React.lazy(() => import("../pages/Home"));
-const Signin = React.lazy(() => import("../pages/Signin"));
+//const Signin = React.lazy(() => import("../pages/Signin"));
 
 const Navigation = () => {
   return (
@@ -30,7 +30,7 @@ const Navigation = () => {
 
           {/* Authentication Routes */}
 
-          <AuthenticationRoute
+          {/*<AuthenticationRoute
             exact
             path={AuthenticationRoutes.LOGIN}
             component={() => <Signin />}
@@ -52,7 +52,7 @@ const Navigation = () => {
             exact
             path={ProtectedRoutes.PRESALE_DASHBOARD}
             component={<>pro</>}
-          />
+          />*/}
         </Switch>
       </React.Suspense>
     </Router>

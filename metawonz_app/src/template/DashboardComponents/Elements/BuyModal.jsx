@@ -1,24 +1,36 @@
 import React, { useState, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Label, SpinnerButton, TextField } from "../..";
-//import { userSelector } from "../../../store/slices/UserSlice";
+import { addMetawonzToUser } from "../../../store/slices/UserSlice";
 
-import { moralisSelector } from "../../../store/slices/MoralisSlice";
+import {
+  moralisSelector,
+  getUserTokenBalancer,
+} from "../../../store/slices/MoralisSlice";
 //import { useDispatch } from "react-redux";
-import Moralis from "moralis";
+import { useMoralis } from "react-moralis";
+import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 const BuyModal = ({ showModal, modalOpen }) => {
-  const [loading, setLoading] = useState(false);
-  //const { userAccount } = useSelector(userSelector);
+  const [process, setProcess] = useState(false);
+
+  const dispatch = useDispatch();
 
   const { userBalances } = useSelector(moralisSelector);
 
   const [amountToBePurchased, setAmountToBePurchased] = useState(0);
   const [errorForm, setError] = useState(false);
 
+  const { Moralis, enableWeb3, user } = useMoralis();
+
+  const dispatcher = async () => {
+    await dispatch(getUserTokenBalancer(user));
+  };
+
   const handleChange = (event) => {
     const { value } = event.target;
-    if (value > userBalances) {
+    if (value > userBalances || value < 1 || value === 0) {
       setError(true);
       setAmountToBePurchased(value);
       return;
@@ -29,41 +41,51 @@ const BuyModal = ({ showModal, modalOpen }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
 
-    await Moralis.authenticate();
-    const transactionOptions = {
-      type: "erc20",
-      amount: Moralis.Units.Token(`${amountToBePurchased}`, "18"),
-      receiver: "0x712dfBfda89595D62D0EFD60AFD37059034657DB",
-      contractAddress: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
-      awaitReceipt: false, // should be switched to false
-    };
+    try {
+      setProcess(true);
 
-    const transaction = await Moralis.transfer(transactionOptions);
+      if (amountToBePurchased === 0) {
+        setError(true);
+        return;
+      }
 
-    transaction
-      .on("receipt", (receipt) => {
-        // TODO: BURADAN DÖNEN SONUÇ İLE İŞLEM BAŞARILIMI GÖREBİLİYORUZ SS İ MASAÜSTÜNDE VE TELEGRAMDA VAR
-        console.log(receipt);
-        setLoading(false);
-      })
-      .on("transactionHash", (hash) => {
-        console.log("hash" + hash);
-        console.log(hash);
-        setLoading(false);
-      })
-      .on("confirmation", (confirmationNumber, receipt) => {
-        console.log(confirmationNumber);
+      let metamask = await Moralis.isMetaMaskInstalled();
 
-        console.log(receipt);
-        setLoading(false);
-      })
-      .on("error", (error) => {
-        console.log("error" + error);
-        console.log(error);
-        setLoading(false);
-      });
+      await enableWeb3({ provider: metamask ? "" : "walletconnect" });
+
+      const transactionOptions = {
+        type: "erc20",
+        amount: Moralis.Units.Token(`${amountToBePurchased}`, "18"),
+        receiver: "0x712dfBfda89595D62D0EFD60AFD37059034657DB",
+        contractAddress: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+        awaitReceipt: false, // should be switched to false
+      };
+
+      const transaction = await Moralis.transfer(transactionOptions);
+
+      transaction
+        .on("receipt", async (receipt) => {
+          const values = {
+            purchasedMetawonz: amountToBePurchased,
+          };
+
+          dispatch(addMetawonzToUser(values));
+          await dispatcher();
+
+          setAmountToBePurchased(0);
+          setProcess(false);
+          toast("Payment Successfully!");
+          setError(false);
+        })
+        .on("error", (error) => {
+          console.log(error);
+          setProcess(false);
+        });
+    } catch (error) {
+      toast("Error");
+      setProcess(false);
+    }
   };
 
   return (
@@ -93,13 +115,23 @@ const BuyModal = ({ showModal, modalOpen }) => {
                       <Label
                         text={`How many BUSD do you want to buy? You have ${userBalances} BUSD`}
                       />
-                      <TextField
-                        type="number"
-                        placeholder="BUSD value to buy"
-                        value={amountToBePurchased}
-                        name="busdValue"
-                        onChange={handleChange}
-                      />
+                      {process ? (
+                        <TextField
+                          disabled
+                          type="number"
+                          placeholder="BUSD value to buy"
+                          value={amountToBePurchased}
+                          name="busdValue"
+                        />
+                      ) : (
+                        <TextField
+                          type="number"
+                          placeholder="BUSD value to buy"
+                          value={amountToBePurchased}
+                          name="busdValue"
+                          onChange={handleChange}
+                        />
+                      )}
                       {errorForm ? (
                         <span className="text-red-500">
                           please do not enter more than the number of busd you
@@ -110,12 +142,19 @@ const BuyModal = ({ showModal, modalOpen }) => {
                   </div>
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-                    {loading ? (
+                    {process ? (
                       <SpinnerButton />
                     ) : (
                       <Fragment>
                         {errorForm ? (
                           <Fragment>
+                            <button
+                              onClick={() => showModal(false)}
+                              className="bg-green-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                              type="submit"
+                            >
+                              Cancel
+                            </button>
                             <button
                               onClick={() => showModal(false)}
                               disabled
@@ -149,6 +188,17 @@ const BuyModal = ({ showModal, modalOpen }) => {
               </div>
             </div>
           </div>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </>
       ) : null}
     </>

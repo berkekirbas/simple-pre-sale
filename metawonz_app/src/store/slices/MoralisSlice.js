@@ -56,3 +56,22 @@ export const getUserTokenBalancer = (userInfo) => {
     }
   };
 };
+
+export const update = (userInfo) => {
+  return async (dispatch) => {
+    dispatch(getUserTokenBalances());
+    try {
+      const data = await Moralis.Web3API.account.getTokenBalances({
+        chain: "bsc",
+        address: userInfo?.attributes.ethAddress,
+      });
+      let busd = data.find((busd) => busd.symbol === "BUSD");
+
+      dispatch(
+        getUserTokenBalancesSuccess(Moralis.Units.FromWei(busd.balance))
+      );
+    } catch (error) {
+      dispatch(getUserTokenBalancesFail());
+    }
+  };
+};

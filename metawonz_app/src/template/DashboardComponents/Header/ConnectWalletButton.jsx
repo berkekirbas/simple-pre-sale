@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { useMoralis } from "react-moralis";
 
-import { metamaskDetector } from "../../../utils/metamaskDetector";
+//import { metamaskDetector } from "../../../utils/metamaskDetector";
 
 const ConnectWalletButton = () => {
   const { authenticate, isAuthenticated, logout } = useMoralis();

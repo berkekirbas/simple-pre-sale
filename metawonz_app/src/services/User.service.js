@@ -33,6 +33,20 @@ class UserService {
       .then((response) => response);
     return response.data;
   };
+
+  addPurchasedMetawonz = async (values) => {
+    const data = await SecureService.getCSRFToken();
+
+    const response = await axios
+      .put(`${this.baseUrl}/api/v1/private/user/addPurchasedMetawonz`, values, {
+        withCredentials: true,
+        headers: {
+          "X-CSRF-TOKEN": data,
+        },
+      })
+      .then((response) => response);
+    return response.data;
+  };
 }
 
 export default new UserService("http://localhost:3005");

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 
 import { Brand, TextField, Button, Modal, SpinnerButton } from "../../template";
-import SecureService from "../../services/Secure.service";
 import AuthService from "../../services/Auth.service";
 
 const Signin = () => {

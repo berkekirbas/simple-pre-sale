@@ -1,10 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-export default function Modal({ showModal, setShowModal, data, setData }) {
-  useEffect(() => {
-    if (showModal === false) setData({ data: "", title: "" });
-  }, [showModal]);
-
+export default function Modal({ showModal, setShowModal, data }) {
   return (
     <>
       {showModal ? (

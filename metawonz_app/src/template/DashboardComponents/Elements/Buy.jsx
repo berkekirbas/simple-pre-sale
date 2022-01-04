@@ -18,7 +18,7 @@ const Buy = () => {
         </div>
       </div>
       <div className="text-center">
-        <div className="text-lg font-semibold">Metawonz </div>
+        <div className="text-lg font-semibold">METAWONZ </div>
         <div className="flex items-center justify-center mt-2">
           <div className="mr-1 text-3xl font-bold">
             1 BUSD <br /> <span className="text-green-500"> = </span> <br /> 10
