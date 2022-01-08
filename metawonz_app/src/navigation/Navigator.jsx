@@ -46,9 +46,10 @@ const Navigator = () => {
           </AdminController>
         )}
       />
+
       <ProtectedRoute
         exact
-        path={ProtectedRoutes.ADMIN_DASHBOARD}
+        path={ProtectedRoutes.ADMIN_DASHBOARD_USER_AREA}
         component={() => (
           <AdminController>
             <Navbar />
