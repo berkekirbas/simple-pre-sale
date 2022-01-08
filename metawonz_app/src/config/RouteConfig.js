@@ -5,6 +5,6 @@ export const AuthenticationRoutes = {
 
 export const ProtectedRoutes = {
   PRESALE_DASHBOARD: "/",
-  ADMIN_DASHBOARD: "/admin/dasboard",
-  ADMIN_DASHBOARD_USER_AREA: "/admin/dasboard/user",
+  ADMIN_DASHBOARD: "/admin/dashboard",
+  ADMIN_DASHBOARD_USER_AREA: "/admin/dashboard/user",
 };

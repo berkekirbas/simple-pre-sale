@@ -1,5 +1,6 @@
 import Dashboard from "./Dashboard";
 import AdminDashboard from "./AdminDashboard";
+import AdminUserDashboard from "./AdminUserDashboard";
 
 import NotFound from "./NotFound";
 

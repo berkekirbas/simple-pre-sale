@@ -14,7 +14,7 @@ import { Provider } from "react-redux";
 import store from "../store";
 import AdminController from "./AdminController";
 import AdminControllerForUserDashboard from "./AdminControllerForUserDashboard";
-import { Navbar } from "../template";
+import AdminUserDashboard from '../pages/AdminUserDashboard'
 
 const Navigator = () => {
   return (
@@ -41,7 +41,6 @@ const Navigator = () => {
         path={ProtectedRoutes.ADMIN_DASHBOARD}
         component={() => (
           <AdminController>
-            <Navbar />
             <AdminDashboard />
           </AdminController>
         )}
@@ -52,8 +51,7 @@ const Navigator = () => {
         path={ProtectedRoutes.ADMIN_DASHBOARD_USER_AREA}
         component={() => (
           <AdminController>
-            <Navbar />
-            <AdminDashboard />
+            <AdminUserDashboard />
           </AdminController>
         )}
       />

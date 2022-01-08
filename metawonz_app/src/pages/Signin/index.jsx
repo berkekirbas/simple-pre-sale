@@ -55,7 +55,7 @@ const Signin = () => {
     }
 
     return data.role === USER_TYPE.ADMIN
-      ? history.push("/admin/dasboard")
+      ? history.push("/admin/dashboard")
       : history.push("/");
   };
 

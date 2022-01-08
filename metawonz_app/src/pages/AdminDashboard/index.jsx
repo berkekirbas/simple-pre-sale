@@ -1,12 +1,13 @@
 import React, { Fragment } from "react";
 
-import { PageContent, PageTitle } from "../../template";
+import {  PageTitle, Navbar } from "../../template";
+
 
 const AdminDashboard = () => {
   return (
     <Fragment>
+      <Navbar />
       <PageTitle />
-      <PageContent />
     </Fragment>
   );
 };
