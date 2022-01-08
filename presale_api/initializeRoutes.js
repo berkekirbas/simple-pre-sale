@@ -13,4 +13,9 @@ module.exports = (app) => {
     `/api/v${process.env.API_VERSION}/secure`,
     require("./routes/Secure.routes")
   );
+
+  app.use(
+    `/api/v${process.env.API_VERSION}/admin`,
+    require("./routes/Admin.routes")
+  );
 };

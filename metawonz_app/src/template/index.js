@@ -12,6 +12,16 @@ import Modal from "./components/Modals/Modal";
 
 /**
  *
+ * Admin UI Component Imports and Exports
+ *
+ */
+
+import Navbar from "./AdminComponents/Navbar";
+import PageTitle from "./AdminComponents/PageTitle";
+import PageContent from "./AdminComponents/PageContent";
+
+/**
+ *
  * Dashboard UI Component Imports and Exports
  *
  */
@@ -26,6 +36,8 @@ import Counter from "./DashboardComponents/Elements/Counter";
 import ConnectWalletButton from "./DashboardComponents/Header/ConnectWalletButton";
 
 export { Header, MetawonzCount, Wallet, Buy, Counter, ConnectWalletButton };
+
+export { Navbar, PageContent, PageTitle };
 
 /**
  *

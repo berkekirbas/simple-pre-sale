@@ -205,6 +205,7 @@ const sendToken = (user, statusCode, response) => {
     })
     .json({
       success: true,
+      role: user.role,
       data: "User Authentication is successfully",
     });
 };

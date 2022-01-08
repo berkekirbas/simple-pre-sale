@@ -1,15 +1,11 @@
 import React from "react";
 
-import { BrowserRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import Navigator from "./navigation/Navigator";
 
 const App = () => {
-  return (
-    <BrowserRouter>
-      <Navigator />
-    </BrowserRouter>
-  );
+  return <Navigator />;
 };
 
-export default App;
+export default withRouter(App);

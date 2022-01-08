@@ -16,7 +16,7 @@ const NotFound = () => {
 
         <button
           className="bg-primary text-white px-8 py-2 focus:outline-none poppins rounded-full mt-24 transform transition duration-300 hover:scale-105"
-          onClick={() => history.push("/")}
+          onClick={() => history.push("/auth/signin")}
         >
           Go back to Dashboard or Login Page
         </button>

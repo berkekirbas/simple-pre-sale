@@ -70,7 +70,7 @@ const BuyModal = ({ showModal, modalOpen }) => {
             purchasedMetawonz: amountToBePurchased,
           };
 
-          dispatch(addMetawonzToUser(values));
+          await dispatch(addMetawonzToUser(values));
           await dispatcher();
 
           setAmountToBePurchased(0);

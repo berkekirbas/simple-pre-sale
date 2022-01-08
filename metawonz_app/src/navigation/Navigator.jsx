@@ -7,11 +7,14 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import { AuthenticationRoutes, ProtectedRoutes } from "../config/RouteConfig";
 
-import { Dashboard, Signin, Signup, NotFound } from "../pages";
+import { Dashboard, Signin, Signup, NotFound, AdminDashboard } from "../pages";
 
 import { MoralisProvider } from "react-moralis";
 import { Provider } from "react-redux";
 import store from "../store";
+import AdminController from "./AdminController";
+import AdminControllerForUserDashboard from "./AdminControllerForUserDashboard";
+import { Navbar } from "../template";
 
 const Navigator = () => {
   return (
@@ -20,14 +23,37 @@ const Navigator = () => {
         exact
         path={ProtectedRoutes.PRESALE_DASHBOARD}
         component={() => (
-          <MoralisProvider
-            serverUrl={"https://ivhjvqqamaom.usemoralis.com:2053/server"}
-            appId={"neyBlY7EjNj8KoRNf5B4rH2g0LqXlkrcGp6Dhr5u"}
-          >
-            <Provider store={store}>
-              <Dashboard />
-            </Provider>
-          </MoralisProvider>
+          <AdminControllerForUserDashboard>
+            <MoralisProvider
+              serverUrl={"https://ivhjvqqamaom.usemoralis.com:2053/server"}
+              appId={"neyBlY7EjNj8KoRNf5B4rH2g0LqXlkrcGp6Dhr5u"}
+            >
+              <Provider store={store}>
+                <Dashboard />
+              </Provider>
+            </MoralisProvider>
+          </AdminControllerForUserDashboard>
+        )}
+      />
+
+      <ProtectedRoute
+        exact
+        path={ProtectedRoutes.ADMIN_DASHBOARD}
+        component={() => (
+          <AdminController>
+            <Navbar />
+            <AdminDashboard />
+          </AdminController>
+        )}
+      />
+      <ProtectedRoute
+        exact
+        path={ProtectedRoutes.ADMIN_DASHBOARD}
+        component={() => (
+          <AdminController>
+            <Navbar />
+            <AdminDashboard />
+          </AdminController>
         )}
       />
 

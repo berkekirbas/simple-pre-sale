@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 
 import { Brand, TextField, Button, Modal, SpinnerButton } from "../../template";
 import AuthService from "../../services/Auth.service";
+import { USER_TYPE } from "../../config/Constants";
 
 const Signin = () => {
   const [isProcess, setProcess] = useState(null);
@@ -53,7 +54,9 @@ const Signin = () => {
       return;
     }
 
-    history.push("/");
+    return data.role === USER_TYPE.ADMIN
+      ? history.push("/admin/dasboard")
+      : history.push("/");
   };
 
   const Inputs = [

@@ -38,8 +38,8 @@ const Signup = () => {
         message:
           "Your Registration is successfully, if you sign in, please verify your mail!",
       });
-      setShowModal(true);
-      history.push("/auth/signin");
+      await setShowModal(true);
+      return history.push("/auth/signin");
     }
   };
 

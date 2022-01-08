@@ -3,7 +3,7 @@ const User = require("../models/User.model");
 
 exports.getUser = (request, response, next) => {
   const {name, walletAddress, metawonzValue} = request.user;
-  response.status(201).json({
+  return response.status(201).json({
     success: true,
     data: {
       name: name,
