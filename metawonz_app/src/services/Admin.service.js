@@ -22,8 +22,7 @@ class AdminService {
       })
       .then((response) => response)
       .catch((error) => error);
-    console.log(response.data);
-    return response.data;
+    return response.data.data;
   };
 }
 

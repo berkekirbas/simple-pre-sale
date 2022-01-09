@@ -4,7 +4,7 @@ import { useMoralis } from "react-moralis";
 //import { metamaskDetector } from "../../../utils/metamaskDetector";
 
 const ConnectWalletButton = () => {
-  const { authenticate, isAuthenticated, logout } = useMoralis();
+  const { authenticate, isAuthenticated, logout, enableWeb3 } = useMoralis();
 
   const connect = async () => {
     // detect metamask
@@ -14,10 +14,16 @@ const ConnectWalletButton = () => {
       authenticate({ chainId: 56 });
       return;
     }*/
+
     await authenticate({
       provider: "walletconnect",
       chainId: 56,
       signingMessage: "Metawonz Wallet Accessing",
+    }).then(() => {
+      enableWeb3({
+        provider: "walletconnect",
+        chainId: 56,
+      });
     });
   };
 

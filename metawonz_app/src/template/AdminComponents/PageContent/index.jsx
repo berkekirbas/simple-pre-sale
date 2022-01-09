@@ -1,12 +1,12 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import UsersTable from "../UsersTable";
 
 const PageContent = () => {
   return (
-    <div>
+    <Fragment>
       <UsersTable />
-    </div>
+    </Fragment>
   );
 };
 

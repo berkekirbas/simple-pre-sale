@@ -7,14 +7,20 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import { AuthenticationRoutes, ProtectedRoutes } from "../config/RouteConfig";
 
-import { Dashboard, Signin, Signup, NotFound, AdminDashboard } from "../pages";
+import {
+  Dashboard,
+  Signin,
+  Signup,
+  NotFound,
+  AdminDashboard,
+  AdminUserDashboard,
+} from "../pages";
 
 import { MoralisProvider } from "react-moralis";
 import { Provider } from "react-redux";
 import store from "../store";
 import AdminController from "./AdminController";
 import AdminControllerForUserDashboard from "./AdminControllerForUserDashboard";
-import AdminUserDashboard from '../pages/AdminUserDashboard'
 
 const Navigator = () => {
   return (
@@ -51,7 +57,9 @@ const Navigator = () => {
         path={ProtectedRoutes.ADMIN_DASHBOARD_USER_AREA}
         component={() => (
           <AdminController>
-            <AdminUserDashboard />
+            <Provider store={store}>
+              <AdminUserDashboard />
+            </Provider>
           </AdminController>
         )}
       />
